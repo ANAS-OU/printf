@@ -34,6 +34,8 @@ int _printf(const char *format, ...)
 				case '%':
 					n += _putchar(*format);
 					break;
+				default:
+					break;
 			}
 		else
 			n += _putchar(*format);
