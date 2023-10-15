@@ -9,7 +9,7 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	unsigned int n = 0; /* number of bytes printted to stdout */
+	int n = 0; /* number of bytes printted to stdout */
 	char *str;
 
 	/* check if format not point to NULL */
@@ -20,9 +20,7 @@ int _printf(const char *format, ...)
 	/* A loop that iterates through all characteres */
 	{
 		if (*format == '%') /* if format points to a % sign */
-		{
-			format++;
-			switch (*format)
+			switch (*(++format))
 			/* then we check the character that comes after the % */
 			{
 				case 'c':
@@ -39,7 +37,6 @@ int _printf(const char *format, ...)
 				default:
 					break;
 			}
-		}
 		else
 			n += _putchar(*format);
 		format++; /* increase by one byte */
