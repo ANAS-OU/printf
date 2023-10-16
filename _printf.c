@@ -9,38 +9,38 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int n = 0; /* number of bytes printted to stdout */
+	int bytes = 0; /* number of bytes printted to stdout */
 	char *str;
 
 	/* check if format not point to NULL */
-	if (!format)
+	if (!format || (*format == '%' && !*(format + 1)))
 		return (-1);
 	va_start(args, format);
 	while (*format)
 	/* A loop that iterates through all characteres */
 	{
-		if (*format == '%') /* if format points to a % sign */
+		if (*format != '%')
+			bytes += _putchar(*format); /* format doesn't point to % sign */
+		else
 			switch (*(++format))
 			/* then we check the character that comes after the % */
 			{
 				case 'c':
-					n += _putchar(va_arg(args, int));
+					bytes += _putchar(va_arg(args, int));
 					break;
 				case 's':
 					str = va_arg(args, char *);
 					while (*str)
-						n += _putchar(*str++);
+						bytes += _putchar(*str++);
 					break;
 				case '%':
-					n += _putchar(*format);
+					bytes += _putchar(*format);
 					break;
 				default:
-					break;
+					_printf("Error: %% is a special character");
 			}
-		else
-			n += _putchar(*format);
 		format++; /* increase by one byte */
 	}
 	va_end(args);
-	return (n);
+	return (bytes);
 }
