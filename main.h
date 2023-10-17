@@ -19,7 +19,7 @@
  */
 typedef struct specifier
 {
-	char specifier;
+	char *specifier;
 	int (*f)(va_list);
 } specifier_t;
 
@@ -40,6 +40,9 @@ int print_str(va_list);
 int print_perc(va_list);
 
 /* get_specifier_handler.c */
-int (*get_specifier_handler(char))(va_list);
+int (*get_specifier_handler(char *))(va_list);
+
+/* _strcmp.c */
+int _strcmp(char *, char *);
 
 #endif /* MAIN_H */

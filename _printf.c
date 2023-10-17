@@ -11,6 +11,7 @@ int _printf(const char *format, ...)
 	va_list args;
 	int (*handler)(va_list);
 	int bytes; /* number of bytes printted to stdout */
+	char spc[2];
 
 	/* check if format not point to NULL */
 	if (!format || (format[0] == '%' && !format[1]))
@@ -25,7 +26,8 @@ int _printf(const char *format, ...)
 			bytes += _putchar(*format); /* format doesn't point to % sign */
 		else
 		{
-			handler = get_specifier_handler(*(++format));
+			spc[0] = *(++format);
+			handler = get_specifier_handler(spc);
 			bytes += handler(args);
 		}
 		format++; /* increase by one byte */
