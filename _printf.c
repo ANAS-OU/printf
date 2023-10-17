@@ -22,16 +22,23 @@ int _printf(const char *format, ...)
 	while (*format)
 	/* A loop that iterates through all characteres */
 	{
-		if (*format != '%')
-			bytes += _putchar(*format); /* format doesn't point to % sign */
-		else
+		if (*format == '%')
 		{
-			spc[0] = *(++format);
+			format++; /* move to what follows '%' */
+			spc[0] = *format;
 			handler = get_specifier_handler(spc);
-			if (!handler)
-				break;
-			bytes += handler(args);
+			if (handler)
+				bytes += handler(args);
+			else
+			{
+				/* handle unknown format specifier case. */
+				bytes += _putchar('%');
+				bytes += _putchar(*format);
+			}
 		}
+		else
+			bytes += _putchar(*format); /* format doesn't point to % sign */
+
 		format++; /* increase by one byte */
 	}
 	va_end(args);

@@ -14,7 +14,7 @@
 /**
  * struct specifier - new custom type
  *
- * @c: conversion specifirr
+ * @specifier: conversion specifirr
  * @f: pointer to print functions
  */
 typedef struct specifier
