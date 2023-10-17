@@ -27,7 +27,7 @@ int _printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++; /* move to what follows '%' */
-			spc[0] = *format;
+			(spc[0] = *format, spc[1] = '\0');
 			handler = get_specifier_handler(spc);
 			if (handler)
 				bytes += handler(args);
@@ -43,7 +43,6 @@ int _printf(const char *format, ...)
 
 		format++; /* increase by one byte */
 	}
-	_putchar(-1);
 	va_end(args);
 	return (bytes);
 }
