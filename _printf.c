@@ -43,7 +43,7 @@ int _printf(const char *format, ...)
 
 		format++; /* increase by one byte */
 	}
-	_putchar('\0');
+	_putchar(-1);
 	va_end(args);
 	return (bytes);
 }
