@@ -9,7 +9,22 @@
 #include <limits.h>
 
 /**********************
- * functions prototype 
+ *    complex types
+ **********************/
+/**
+ * struct specifier - new custom type
+ *
+ * @c: conversion specifirr
+ * @f: pointer to print functions
+ */
+typedef struct specifier
+{
+	char specifier;
+	int (*f)(va_list);
+} specifier_t;
+
+/**********************
+ * functions prototype
  **********************/
 
 /* _printf.c */
@@ -17,9 +32,14 @@ int _printf(const char *format, ...);
 
 /* _stdout.c */
 int _putchar(char);
-int _puts(char*);
+int _puts(char *);
 
-/* print_number.c */
-void print_number(int n);
+/* print_1.c */
+int print_char(va_list);
+int print_str(va_list);
+int print_perc(va_list);
+
+/* get_specifier_handler.c */
+int (*get_specifier_handler(char))(va_list);
 
 #endif /* MAIN_H */
