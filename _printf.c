@@ -14,7 +14,9 @@ int _printf(const char *format, ...)
 	char spc[2];
 
 	/* check if format not point to NULL */
-	if (!format)
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
 
 	va_start(args, format);
