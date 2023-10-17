@@ -43,3 +43,22 @@ int print_perc(va_list args)
 
 	return (_putchar('%'));
 }
+
+/**
+ * print_int - function that use other functions
+ * to counts an integer's digits and prints them
+ * to the stdout.
+ * @args: _printf argments list.
+ *
+ * Return: number of digits (length).
+ */
+int print_int(va_list args)
+{
+	int n, bytes;
+
+	n = va_arg(args, int);
+	print_number(n);
+	bytes = digits_counter(n);
+
+	return (bytes);
+}

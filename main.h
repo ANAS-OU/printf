@@ -38,11 +38,16 @@ int _puts(char *);
 int print_char(va_list);
 int print_str(va_list);
 int print_perc(va_list);
+int print_int(va_list);
 
 /* get_specifier_handler.c */
 int (*get_specifier_handler(char *))(va_list);
 
 /* _strcmp.c */
 int _strcmp(char *, char *);
+
+/* print_number.c */
+void print_number(int);
+int digits_counter(int);
 
 #endif /* MAIN_H */
