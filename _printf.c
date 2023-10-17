@@ -28,6 +28,8 @@ int _printf(const char *format, ...)
 		{
 			spc[0] = *(++format);
 			handler = get_specifier_handler(spc);
+			if (!handler)
+				break;
 			bytes += handler(args);
 		}
 		format++; /* increase by one byte */
