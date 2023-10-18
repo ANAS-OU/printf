@@ -1,48 +1,25 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/**********************
- * standard libraries
- **********************/
-#include <unistd.h>
 #include <stdarg.h>
-#include <limits.h>
 
-/**********************
- *    complex types
- **********************/
-/**
- * struct specifier - new custom type
- *
- * @specifier: conversion specifirr
- * @f: pointer to print functions
- */
-typedef struct specifier
-{
-	char *specifier;
-	int (*f)(va_list);
-} specifier_t;
-
-/**********************
- * functions prototype
- **********************/
-
-/* _printf.c */
+int _putchar(char c);
+void _puts(char *str);
+int _strlen(char *s);
 int _printf(const char *format, ...);
+char *convert_to(char representation[], unsigned int num, int base);
+int function_manager(char c, va_list arg);
+int _switch(char c, va_list arg);
+int print_character(va_list arg);
+int print_sign(va_list arg, int base);
+int print_unsign(va_list arg, int base);
+int print_string(va_list arg);
+int print_ptr(va_list arg);
+int print_rot13(va_list arg);
+int print_rev(va_list arg);
+int print_base16_upper_lower(va_list arg, char *representation);
+int loop_format(va_list arg, const char *string);
+int call_function_manager(char aux, va_list arg);
+int check_percent(int *flag, char aux);
 
-/* _stdout.c */
-int _putchar(char);
-int _puts(char *);
-
-/* print_1.c */
-int print_char(va_list);
-int print_str(va_list);
-int print_perc(va_list);
-
-/* get_specifier_handler.c */
-int (*get_specifier_handler(char *))(va_list);
-
-/* _strcmp.c */
-int _strcmp(char *, char *);
-
-#endif /* MAIN_H */
+#endif
