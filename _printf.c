@@ -1,48 +1,58 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 /**
- * _printf - function that prints formated strings
- * @format: string format to print to the stdout
- *
- * Return: number of characters printed
+ * my_printf - Print formatted output to stdout.
+ * @fmt: A format string with optional conversion specifiers.
+ * Return: The count of characters printed (excluding the null byte).
  */
-int _printf(const char *format, ...)
-{
-	va_list args;
-	int (*handler)(va_list);
-	int bytes; /* number of bytes printted to stdout */
-	char spc[2];
+int my_printf(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
 
-	/* check if format not point to NULL */
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
+    int char_count = 0; // To keep track of the number of characters printed
 
-	va_start(args, format);
-	bytes = 0;
-	while (*format)
-	/* A loop that iterates through all characteres */
-	{
-		if (*format == '%')
-		{
-			format++; /* move to what follows '%' */
-			(spc[0] = *format, spc[1] = '\0');
-			handler = get_specifier_handler(spc);
-			if (handler)
-				bytes += handler(args);
-			else
-			{
-				/* handle unknown format specifier case. */
-				bytes += _putchar('%');
-				bytes += _putchar(*format);
-			}
-		}
-		else
-			bytes += _putchar(*format); /* format doesn't point to % sign */
+    for (int i = 0; fmt[i] != '\0'; i++) {
+        if (fmt[i] == '%') {
+            i++; // Move to the next character after '%'
+            if (fmt[i] == '\0') {
+                break; // End of format string
+            }
 
-		format++; /* increase by one byte */
-	}
-	va_end(args);
-	return (bytes);
+            switch (fmt[i]) {
+                case 'c':
+                    char_count += putchar(va_arg(args, int));
+                    break;
+
+                case 's': {
+                    const char *str = va_arg(args, const char*);
+                    while (*str) {
+                        char_count += putchar(*str);
+                        str++;
+                    }
+                    break;
+                }
+
+                case '%':
+                    char_count += putchar('%');
+                    break;
+
+                default:
+                    char_count += putchar('%');
+                    char_count += putchar(fmt[i]);
+                    break;
+            }
+        } else {
+            char_count += putchar(fmt[i]);
+        }
+    }
+
+    va_end(args);
+    return char_count;
+}
+
+int main() {
+    my_printf("Greetings, %s! My beloved symbol is %c. Here's a %% sign: %%\n", "Eve", 'Y');
+    return 0;
 }
