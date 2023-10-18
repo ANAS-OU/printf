@@ -1,4 +1,6 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 /**
  * print_buffer - Print the contents of a buffer if it exists
