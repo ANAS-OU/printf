@@ -24,9 +24,6 @@ int _printf(const char *format, ...)
 	while (*format)
 	/* A loop that iterates through all characteres */
 	{
-		if (*format == '%' && !*(format + 1))
-			return (-1);
-
 		if (*format == '%')
 		{
 			format++; /* move to what follows '%' */
