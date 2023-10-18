@@ -1,58 +1,120 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdarg.h>
 
 /**
- * my_printf - Print formatted output to stdout.
- * @fmt: A format string with optional conversion specifiers.
- * Return: The count of characters printed (excluding the null byte).
+ * _printf - Custom implementation of printf
+ * @format: A pointer to the format string
+ *
+ * Description: This function implements a subset of printf functionality.
+ * Return: The number of characters printed.
  */
-int my_printf(const char *fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
+int _printf(const char *format, ...)
+{
+	const char *string;
+	int count = 0;
+	va_list args;
 
-    int char_count = 0; // To keep track of the number of characters printed
+	if (!format)
+		return (-1);
 
-    for (int i = 0; fmt[i] != '\0'; i++) {
-        if (fmt[i] == '%') {
-            i++; // Move to the next character after '%'
-            if (fmt[i] == '\0') {
-                break; // End of format string
-            }
+	va_start(args, format);
+	string = format;
 
-            switch (fmt[i]) {
-                case 'c':
-                    char_count += putchar(va_arg(args, int));
-                    break;
+	count = loop_format(args, string);
 
-                case 's': {
-                    const char *str = va_arg(args, const char*);
-                    while (*str) {
-                        char_count += putchar(*str);
-                        str++;
-                    }
-                    break;
-                }
-
-                case '%':
-                    char_count += putchar('%');
-                    break;
-
-                default:
-                    char_count += putchar('%');
-                    char_count += putchar(fmt[i]);
-                    break;
-            }
-        } else {
-            char_count += putchar(fmt[i]);
-        }
-    }
-
-    va_end(args);
-    return char_count;
+	va_end(args);
+	return (count);
 }
 
-int main() {
-    my_printf("Greetings, %s! My beloved symbol is %c. Here's a %% sign: %%\n", "Eve", 'Y');
-    return 0;
+/**
+ * loop_format - Loop through the format string
+ * @arg: The va_list argument
+ * @string: A pointer to the format string
+ *
+ * Description: This function iterates through the format string and processes
+ * format specifiers.
+ * Return: The number of characters printed.
+ */
+int loop_format(va_list arg, const char *string)
+{
+	int i = 0, flag = 0, count_format = 0, count = 0, check_percent = 0;
+
+	while (i < _strlen((char *)string) && *string != '\0')
+	{
+		char character = string[i];
+
+		if (character == '%')
+		{
+			i++, flag++;
+			character = string[i];
+			if (character == '\0' && _strlen((char *)string) == 1)
+				return (-1);
+			if (character == '\0')
+				return (count);
+			if (character == '%')
+			{
+				flag++;
+			}
+			else
+			{
+				count_format = function_manager(character, arg);
+				if (count_format >= 0 && count_format != -1)
+				{
+					i++;
+					character = string[i];
+					if (character == '%')
+						flag--;
+					count = count + count_format;
+				}
+				else if (count_format == -1 && character != '\n')
+				{
+					count += _putchar('%');
+				}
+			}
+		}
+		check_percent = check_percent(&flag, character);
+		count += check_percent;
+		if (check_percent == 0 && character != '\0' && character != '%')
+			count += _putchar(character), i++;
+		check_percent = 0;
+	}
+	return (count);
+}
+
+/**
+ * check_percent - Print '%' character
+ * @flag: A pointer to the flag
+ * @character: The character to check
+ *
+ * Description: This function prints a '%' character and updates the flag.
+ * Return: 1 if '%' is printed, 0 otherwise.
+ */
+int check_percent(int *flag, char character)
+{
+	int tmp_flag;
+	int count = 0;
+
+	tmp_flag = *flag;
+	if (tmp_flag == 2 && character == '%')
+	{
+		_putchar('%');
+		tmp_flag = 0;
+		count = 1;
+	}
+	return (count);
+}
+
+/**
+ * call_function_manager - Call function manager
+ * @character: The character parameter
+ * @arg: The va_list argument
+ *
+ * Description: This function calls the function manager.
+ * Return: The number of characters printed.
+ */
+int call_function_manager(char character, va_list arg)
+{
+	int count = 0;
+
+	count = function_manager(character, arg);
+	return (count);
 }
